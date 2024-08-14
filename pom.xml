@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.kkwcloud</groupId>
-	<artifactId>www</artifactId>
-	<name>ex00</name>
+	<groupId>net.kkkcloud</groupId>
+	<artifactId>controller</artifactId>
+	<name>ex01</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<java-version>11</java-version>
-		<org.springframework-version>5.3.21</org.springframework-version>
+		<java-version>11</java-version> <!-- 자바 버전 수정 -->
+		<org.springframework-version>5.0.7.RELEASE</org.springframework-version> <!-- 스프링프레임워크 버전 수정 -->
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
@@ -45,16 +45,16 @@
 			<version>1.18.24</version>
 			<scope>provided</scope>
 		</dependency>
-				
+		
 		<!-- AspectJ -->
-		<dependency> <!-- aop 관련 관심사의 분리 13행 버전 참조 -->
+		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>	
 		
-		<!-- Logging : 현재 보안 이슈로 인하여 log4j2로 사용함으로 주석처리 함 -->
-<!--		<dependency>
+		<!-- Logging
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${org.slf4j-version}</version>
@@ -114,7 +114,7 @@
 		    <version>2.18.0</version>
   		</dependency>
   		
-  		<!-- 커넥션 풀 jsbc https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+  		 <!-- 커넥션 풀 jdbc https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
 		<dependency>
     		<groupId>com.zaxxer</groupId>
     		<artifactId>HikariCP</artifactId>
@@ -149,13 +149,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- 콘솔 결과를 표형식으로 보여줌. https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4 -->
-		<dependency>
- 		   <groupId>org.bgee.log4jdbc-log4j2</groupId>
- 		   <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
- 		   <version>1.16</version>
-		</dependency>
-
+		
   		
 		<!-- @Inject -->
 		<dependency>
@@ -183,7 +177,7 @@
 			<version>1.2</version>
 		</dependency>
 	
-		<!-- Test 4.7 -> 4.12 버전으로 향상 -->
+		<!-- Test 4.7 -> 4.12 버전으로 향상-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
