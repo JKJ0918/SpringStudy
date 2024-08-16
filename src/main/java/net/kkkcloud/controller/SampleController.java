@@ -1,10 +1,15 @@
 package net.kkkcloud.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,11 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.log4j.Log4j2;
 import net.kkkcloud.domain.SampleDTO;
 import net.kkkcloud.domain.SampleDTOList;
+import net.kkkcloud.domain.TodoDTO;
 
 @Controller // <context:component-scan base-package="net.kkkcloud.controller" />
 @RequestMapping("/sample/*") // 현재 클래스의 모든 메서드들의 기본적인 URL 경로
 @Log4j2
 public class SampleController {
+	
+	/* @InitBinder를 사용한 방식
+	@InitBinder // 문자열을 날짜 형식으로 변경용
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd"); //yyyy-MM-dd 도 사용가능
+		binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(simpleDateFormat, false));
+	}*/
+	
+	
 
 	@RequestMapping("") // http://localhost:80/sample/
 	public void basic() {
@@ -76,13 +91,23 @@ public class SampleController {
 	}
 
 	@GetMapping("ex02Bean")
-	// http://localhost:80/sample/ex02Bean?list[0].name=kkw&list[0].age=15 -> 특수문자 오류
-	// http://localhost:80/sample/ex02Bean?list%5B0%5D.name%3Dkkw%26list%5B0%5D.age%3D15 -> url 인코딩 후
+	// http://localhost:80/sample/ex02Bean?list[0].name=kkw&list[0].age=15 -> 특수문자
+	// 오류
+	// http://localhost:80/sample/ex02Bean?list%5B0%5D.name%3Dkkw%26list%5B0%5D.age%3D15
+	// -> url 인코딩 후
 	public String ex02bean(SampleDTOList list) { // 리스트 객체를 매개값으로 받음
 
 		log.info("list dtos : " + list);
 		return "ex02Bean";
 
+	}
+
+	@GetMapping("/ex03")
+	// 1.@InitBinder - http://localhost:80/sample/ex03?title=mbcacademy1&dueDate=2024/08/15&check=true
+	// 2.@DateTimeFormat - http://localhost:80/sample/ex03?title=mbcacademy2&dueDate=2024-08-15
+	public String ex03(TodoDTO todoDTO) {
+		log.info("todo :" + todoDTO);
+		return "ex03";
 	}
 
 }

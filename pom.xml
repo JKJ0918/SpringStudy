@@ -120,6 +120,24 @@
     		<artifactId>HikariCP</artifactId>
     		<version>2.7.4</version>
 		</dependency>
+		<!-- root-context.xml 에 삽입
+		 
+		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property> 
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"></property>
+			
+		<property name="username" value="book_ex"></property>
+		<property name="password" value="book_ex"></property>
+		</bean>
+
+		HikariCP configuration
+		<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+			<constructor-arg ref="hikariConfig" />
+		</bean>
+		
+		-->
+		
 		
 		<!-- Mybatis : sql 매핑용 jdbc -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
@@ -129,27 +147,51 @@
  		  <version>3.4.6</version>	
 		</dependency>
 
-		<!-- Mybatis : 스프링용-->
-		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+		<!-- Mybatis : 스프링용 https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
     		<groupId>org.mybatis</groupId>
     		<artifactId>mybatis-spring</artifactId>
-    		<version>1.3.2</version>
+    		<version>1.3.3</version>
 		</dependency>
 		
-		<dependency> <!-- 트렌젝션 코드용 -->
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${org.springframework-version}</version>
+		<!-- 마이바티스 : jdbc 연동용 https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.4.6</version>
 		</dependency>
 		
-		<dependency> <!-- Spring-jdbc 코드용 -->
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework-version}</version>
+		<!-- 스프링 트랜젝션 처리용 https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- 스프링에 jdbc 연결용 https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		    <version>${org.springframework-version}</version>
 		</dependency>
 		
-		
+		<!-- 로그출력을 표형식으로 구현 https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+		    <version>1.16</version>
+		</dependency>
+
+
+  		<!-- root-context.xml 코드 변경  
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+	
+		<mybatis-spring:scan base-package="org.zerock.mapper"/> 
+		sql처리를 mapper에서 찾는다. 
+				
+		-->
   		
 		<!-- @Inject -->
 		<dependency>
