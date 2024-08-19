@@ -6,13 +6,20 @@ import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j2;
 import net.kkkcloud.domain.SampleDTO;
@@ -110,4 +117,69 @@ public class SampleController {
 		return "ex03";
 	}
 
+	@GetMapping("/ex04") //http://localhost:80/sample/ex04?name=chicken&age=7&height=20&weight=7&page=7
+	public String ex04(SampleDTO dto, @ModelAttribute("page") int page) {
+		// @ModelAttribute("page") -> url을 통해서 넘어온 값을 model에 담아 준다
+		
+		log.info("dto : " + dto);
+		log.info("page : " + page);
+		
+		return "/sample/ex04"; //http://localhost:80/sample/ex04.jsp
+		//view : servlet-context.xml에서 담당 -> 실제 경로 /WEB-INF/views/sample/ex04.jsp 가 있어야 함.
+	}
+	
+	//리턴 타입에 대한 테스트
+	@GetMapping("/ex05") // http://localhost:80/sample/ex05
+	public void ex05() { // void -> /WEB-INF/views/sample/ex05.jsp를 찾음
+		log.info("/ex05 메서드 실행");
+		//파일 [/WEB-INF/views/sample/ex05.jsp]을(를) 찾을 수 없습니다.
+		
+	}
+	
+	// 컨트롤러에서 처리한 값을 json으로 출력 테스트
+	@GetMapping("/ex06") // http://localhost:80/sample/ex06
+	public @ResponseBody SampleDTO ex06() { // @ResponseBody SampleDTO 응답바디 영역에 객체를 담아 리턴
+		
+		SampleDTO dto = new SampleDTO(); // 빈 객체 생성
+		dto.setName("홍길동");
+		dto.setAge(39);
+		dto.setHeight(170);
+		dto.setWeight(75);
+		
+		return dto; // json{"name":"홍길동","age":39,"Height":170,"Weight":75} -> 백개발자는 json으로만 보냄
+		// 프론트 개발자는 화면에 div, table 등을 이용해서 보여줌.
+		
+		// 응답 헤더에 값을 추가하여 보냄
+	}
+	
+	@GetMapping("/ex07") // http://localhost:80/sample/ex07
+	public ResponseEntity<String> ex07(){
+		log.info("/ex07 메서드 실행......");
+		
+		String msg = "{\"name\":\"홍길동\",\"age\":39,\"Height\":170,\"Weight\":75}"; // json {"name":"홍길동","age":39,"Height":170,"Weight":75}
+	
+		HttpHeaders header = new HttpHeaders(); // httpHeaders 객체 생성 *springFrameWork
+		header.add("Content-Type", "application/json;charset=UTF-8"); // 헤더에 타입 추가 json 임을 명시
+		
+		return new ResponseEntity<String>(msg, header, HttpStatus.OK); // HttpStatus.OK 200 정상코드 임을 보냄
+		// 웹페이지 F12 > Network > Ctrl+R 클릭 시 확인가능
+	}
+	
+	@GetMapping("/exUpload") // http://localhost:80/sample/exUpload
+	public void exUpload() {
+		log.info("/exUpload 메서드 실행.....");
+		//리턴이 void -> http://localhost:80/sample/exUpload.jsp
+	}
+	
+	@PostMapping("exUploadPost") // http://localhost:80/sample/exUpload
+	public void exUploadPost(ArrayList<MultipartFile> files) {
+		files.forEach( file -> {
+			log.info("-------------------------------------");
+			log.info("name : " + file.getOriginalFilename()); //원본 파일명 출력
+			log.info("name : " + file.getSize()); // 파일 크기
+			log.info("toString : " + file.toString()); // toString 메서드 출력
+		});
+	}
+	
+	//Error msg test 1. http://localhost:80/sample/ex04?name=chicken&age=ab&height=20&weight=7&page=7
 }
